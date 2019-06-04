@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{92F61B97-4950-43D7-81D7-92F536D887CB}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LibraryManagement</RootNamespace>
+    <AssemblyName>LibraryManagement</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App\CheckLogin.cs" />
+    <Compile Include="EnumMyStruct.cs" />
+    <Compile Include="Forms\BorrowBook.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BorrowBook.designer.cs">
+      <DependentUpon>BorrowBook.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GiveBackBook.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GiveBackBook.designer.cs">
+      <DependentUpon>GiveBackBook.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LoginFormLibrary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginFormLibrary.designer.cs">
+      <DependentUpon>LoginFormLibrary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainFormLibrary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainFormLibrary.designer.cs">
+      <DependentUpon>MainFormLibrary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ManageBook.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ManageBook.designer.cs">
+      <DependentUpon>ManageBook.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Manage_UserEmployee.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Manage_UserEmployee.designer.cs">
+      <DependentUpon>Manage_UserEmployee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PasswordChangingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PasswordChangingForm.designer.cs">
+      <DependentUpon>PasswordChangingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Usefull_Function.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQL\ConnectSQL\SQLConnection_Library.cs" />
+    <Compile Include="SQL\ListData\DataFromSQL.cs" />
+    <Compile Include="SQL\ListData\Fill.cs" />
+    <Compile Include="SQL\ListData\Query_MuonSach.cs" />
+    <Compile Include="SQL\ListData\Query_NganHang.cs" />
+    <Compile Include="SQL\ListData\Query_NguoiDung.cs" />
+    <Compile Include="SQL\ListData\Query_NguoiDung_NganHang.cs" />
+    <Compile Include="SQL\ListData\Query_NhanSach.cs" />
+    <Compile Include="SQL\ListData\Query_NhanVien.cs" />
+    <Compile Include="SQL\ListData\Query_NhanVien_NganHang.cs" />
+    <Compile Include="SQL\ListData\Query_Sach.cs" />
+    <Compile Include="SQL\ListData\Query_Sach_TheLoai.cs" />
+    <Compile Include="SQL\ListData\Query_TheLoai.cs" />
+    <Compile Include="SQL\Query.cs" />
+    <Compile Include="SQL\Struct\MuonSach.cs" />
+    <Compile Include="SQL\Struct\NganHang.cs" />
+    <Compile Include="SQL\Struct\NguoiDung.cs" />
+    <Compile Include="SQL\Struct\NguoiDung_NganHang.cs" />
+    <Compile Include="SQL\Struct\NhanSach.cs" />
+    <Compile Include="SQL\Struct\NhanVien.cs" />
+    <Compile Include="SQL\Struct\NhanVien_NganHang.cs" />
+    <Compile Include="SQL\Struct\Sach.cs" />
+    <Compile Include="SQL\Struct\Sach_TheLoai.cs" />
+    <Compile Include="SQL\Struct\TheLoai.cs" />
+    <EmbeddedResource Include="Forms\BorrowBook.resx">
+      <DependentUpon>BorrowBook.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GiveBackBook.resx">
+      <DependentUpon>GiveBackBook.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoginFormLibrary.resx">
+      <DependentUpon>LoginFormLibrary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainFormLibrary.resx">
+      <DependentUpon>MainFormLibrary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ManageBook.resx">
+      <DependentUpon>ManageBook.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Manage_UserEmployee.resx">
+      <DependentUpon>Manage_UserEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PasswordChangingForm.resx">
+      <DependentUpon>PasswordChangingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\2aaf5af8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\25776-7-delete-button-image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\13445437_479927728876103_5741817774232375742_n.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ahihihiii %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\back-png-image-14983.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Edit-validated-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\erase-pngrepo-com.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\find-148857_640.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Life-Sized-Rem-Statue-03.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NoAvartar.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\on-the-table-at-library-blurred-background_rrchdxfyx_thumbnail-full01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\restart-png-open-2000.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save-png-image-26336.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ThucTapNhom_CreateDatabase_KhaiVu_LibraryManagement.sql" />
+    <Content Include="ThucTapNhom_Data_KhaiVu_LibraryManagement.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
