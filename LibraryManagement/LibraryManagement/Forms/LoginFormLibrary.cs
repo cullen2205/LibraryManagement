@@ -22,7 +22,7 @@ namespace LibraryManagement.Forms
         public LoginFormLibraryManagement()
         {
             InitializeComponent();
-            this.MaximizeBox = false;
+            //this.MaximizeBox = false;
 
             // DataFromSQL.GetALL();
         }
@@ -139,7 +139,7 @@ namespace LibraryManagement.Forms
             
         }
 
-        private void label3_Click(object sender, EventArgs e)
+        private void Close_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }

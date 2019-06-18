@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using LibraryManagement.Models;
+using System.Data.Entity;
 
 namespace LibraryManagement.Forms
 {
@@ -14,17 +16,12 @@ namespace LibraryManagement.Forms
     {
         List<string> lMuonSach = new List<string>();
         List<string> lListBorrow = new List<string>();
-
+        private DbLibraryManagement db = new DbLibraryManagement();
         private string sSoCMND;
         public BorrowBook(string _SoCMND)
         {
             InitializeComponent();
-            this.dataGridView1_ListBook.ReadOnly = true;
-            this.dataGridView2_ListBorrow.ReadOnly = true;
-            this.dataGridView1_ListBook.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2_ListBorrow.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.MaximizeBox = false;
-            this.MaximumSize = this.MinimumSize = new Size(990, 650);
+            //this.MaximizeBox = false;
             sSoCMND = _SoCMND;
         }
 
@@ -48,10 +45,11 @@ namespace LibraryManagement.Forms
             this.dataGridView2_ListBorrow.Columns[this.dataGridView2_ListBorrow.Columns.Add(@"GioiHanTuoi", @"Giới hạn tuổi")].DataPropertyName = @"GioiHanTuoi";
             this.dataGridView2_ListBorrow.Columns[this.dataGridView2_ListBorrow.Columns.Add(@"DuongDanAnhDaiDien", @"Đường dẫn ảnh")].DataPropertyName = @"DuongDanAnhDaiDien";
 
-            lMuonSach = SQL.ListData.GetDataFromSQL.MuonSach_GetOneColumn("MuonSach", "MaSach");
+            //lMuonSach = SQL.ListData.GetDataFromSQL.MuonSach_GetOneColumn("MuonSach", "MaSach");
+            lMuonSach = db.Database.SqlQuery<string>("SELECT MaSach FROM MuonSach").ToList();
             RemoveSameValue(ref lMuonSach);
-
-            button5_Refresh_Click(sender, e);
+            
+            btnRefresh_Click(sender, e);
         }
 
         private void RemoveSameValue(ref List<string> l)
@@ -87,13 +85,15 @@ namespace LibraryManagement.Forms
             }
         }
 
-        private void button5_Refresh_Click(object sender, EventArgs e)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
             // Đổ dữ liêu vào datagridview
-            SQL.ListData.Fill.AllToDataGridView(@"Sach", ref this.dataGridView1_ListBook);
+            //BindingList<Sach> lsach = new BindingList<Sach>(db.Saches.ToList());
+            //dataGridView1_ListBook.DataSource = lsach;
+            dataGridView1_ListBook.DataSource = new System.Collections.ObjectModel.ObservableCollection<Sach>(db.Saches.ToList()).ToBindingList();
 
             // load lại danh sách đã mượn
-            lMuonSach = SQL.ListData.GetDataFromSQL.MuonSach_GetOneColumn("MuonSach", "MaSach");
+            lMuonSach = db.Database.SqlQuery<string>("SELECT MaSach FROM MuonSach").ToList();
             RemoveSameValue(ref lMuonSach);
 
             // xoá những cuốn sách đã có trong danh sách mượn
@@ -112,21 +112,21 @@ namespace LibraryManagement.Forms
         
         private void AddToDataGridView(ref DataGridView _source, ref DataGridView _endPoint, int _index)
         {
-                _endPoint.Rows.Add(
-            _source.Rows[_index].Cells["MaSach"].Value.ToString(),
-            _source.Rows[_index].Cells["TenSach"].Value.ToString(),
-            _source.Rows[_index].Cells["TacGia"].Value.ToString(),
-            _source.Rows[_index].Cells["NamXuatBan"].Value.ToString(),
-            _source.Rows[_index].Cells["Gia"].Value.ToString(),
-            _source.Rows[_index].Cells["NhaXuatBan"].Value.ToString(),
-            _source.Rows[_index].Cells["GioiHanTuoi"].Value.ToString(),
-            _source.Rows[_index].Cells["DuongDanAnhDaiDien"].Value.ToString()
+            _endPoint.Rows.Add(
+            _source.Rows[_index].Cells["MaSach"].Value,
+            _source.Rows[_index].Cells["TenSach"].Value,
+            _source.Rows[_index].Cells["TacGia"].Value,
+            _source.Rows[_index].Cells["NamXuatBan"].Value,
+            _source.Rows[_index].Cells["Gia"].Value,
+            _source.Rows[_index].Cells["NhaXuatBan"].Value,
+            _source.Rows[_index].Cells["GioiHanTuoi"].Value,
+            _source.Rows[_index].Cells["DuongDanAnhDaiDien"].Value
             );
         }
 
         private void dataGridView1_ListBook_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= this.dataGridView1_ListBook.RowCount - 1 || e.RowIndex < 0)
+            if (e.RowIndex >= this.dataGridView1_ListBook.RowCount - 1 | e.RowIndex < 0)
             {
                 return;
             }
@@ -142,7 +142,7 @@ namespace LibraryManagement.Forms
 
         private void dataGridView2_ListBorrow_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= this.dataGridView2_ListBorrow.RowCount - 1 || e.RowIndex < 0)
+            if (e.RowIndex >= this.dataGridView2_ListBorrow.RowCount - 1 | e.RowIndex < 0)
             {
                 return;
             }
@@ -152,20 +152,21 @@ namespace LibraryManagement.Forms
             // xoá phần từ đã click ở datagrview vừa bấm
             this.dataGridView2_ListBorrow.Rows.RemoveAt(e.RowIndex);
 
-            this.button5_Refresh_Click(new object(), new EventArgs());
+            this.btnRefresh_Click(new object(), new EventArgs());
         }
 
-        private void button4_Exit_Click(object sender, EventArgs e)
+        private void btnExit_Click(object sender, EventArgs e)
         {
             Forms.LoginFormLibraryManagement.mainForm.Show();
             this.Dispose();
         }
 
-        private void button6_Find_Click(object sender, EventArgs e)
+        private void btnFind_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(this.textBox1_search.Text))
             {
-                Usefull_Function.Find(this.textBox1_search.Text, ref dataGridView1_ListBook, new List<int>() {0, 1, 2, 3, 4, 5, 6 });
+                btnRefresh_Click(sender, e);
+                Usefull_Function.Find(this.textBox1_search.Text, ref dataGridView1_ListBook);
             }
         }
 
@@ -175,7 +176,7 @@ namespace LibraryManagement.Forms
             this.Dispose();
         }
 
-        private void button3_Borrow_Click(object sender, EventArgs e)
+        private void btnBorrow_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBox2_IDEmployee.Text))
             {
@@ -233,6 +234,16 @@ namespace LibraryManagement.Forms
                 MessageBox.Show("\n- Không tồn tại mã nhân viên, xin hãy kiểm tra lại!");
                 return;
             }
+        }
+
+        private void dataGridView2_ListBorrow_MouseMove(object sender, MouseEventArgs e)
+        {
+            toolTip1.SetToolTip(dataGridView2_ListBorrow, "Danh sách mượn");
+        }
+
+        private void dataGridView1_ListBook_MouseMove(object sender, MouseEventArgs e)
+        {
+            toolTip1.SetToolTip(dataGridView1_ListBook, "Sách trong thư viện");
         }
     }
 }

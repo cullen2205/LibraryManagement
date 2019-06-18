@@ -118,11 +118,23 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ahihihiii" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="abstract_tribal_background_png714_41e4_9345_07efd2ad87a5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\abstract-tribal-background-png714-41e4-9345-07efd2ad87a5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ahihihiii__2_" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ahihihiii (2).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="arrow_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow-right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="back_png_image_14983" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\back-png-image-14983.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="brochure_graphic_design_background_png_hd_cyberuse_pertaining_to_brochure_graphic_design_background_png_hd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\brochure-graphic-design-background-png-hd-cyberuse-pertaining-to-brochure-graphic-design-background-png-hd.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="close_hi" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\close-hi.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Edit_validated_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Edit-validated-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -142,6 +154,9 @@
   <data name="on_the_table_at_library_blurred_background_rrchdxfyx_thumbnail_full01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\on-the-table-at-library-blurred-background_rrchdxfyx_thumbnail-full01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="orange_polygonal_background_fade_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orange-polygonal-background-fade-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="restart_png_open_2000" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\restart-png-open-2000.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -156,5 +171,8 @@
   </data>
   <data name="_2aaf5af8" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\2aaf5af8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_4_confetti_background_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\4-confetti-background-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

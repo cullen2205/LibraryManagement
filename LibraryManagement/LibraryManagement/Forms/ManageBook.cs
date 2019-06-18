@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using LibraryManagement.Models;
+using System.Data.Entity.Migrations;
+using System.Data.Entity;
 
 namespace LibraryManagement.Forms
 {
@@ -17,6 +20,7 @@ namespace LibraryManagement.Forms
         private List<TextBox> lTextBox = new List<TextBox>();
         private List<string> lTenTheLoai;
         private List<string> lMaTheLoai;
+        private DbLibraryManagement db = new DbLibraryManagement();
         //private List<Button> lButton = new List<Button>();
         string _pathAvatar;
 
@@ -26,13 +30,12 @@ namespace LibraryManagement.Forms
             InitializeComponent();
 
             // cài đặt mặc định cho form
-            this.MaximizeBox = false;
-            this.MaximumSize = this.MinimumSize = new Size(1260, 505);
-            this.textBox1.Enabled = false;
-            this.textBox8.Enabled = false;
+            //this.MaximizeBox = false;
+            this.txtMaSach.Enabled = false;
+            this.txtTinhTrang.Enabled = false;
             this.dataGridView2_DSTheLoai.ReadOnly = true;
 
-            button8_AddNewTypeBook.Hide();
+            btnAddNewTypeBook.Hide();
         }
 
         private void ManageBook_Load(object sender, EventArgs e)
@@ -53,12 +56,12 @@ namespace LibraryManagement.Forms
             //lTextBox.Add(this.textBox0_Search);
             //lTextBox.Add(this.textBox1);
 
-            lTextBox.Add(this.textBox2);
-            lTextBox.Add(this.textBox3);
-            lTextBox.Add(this.textBox4);
-            lTextBox.Add(this.textBox5);
-            lTextBox.Add(this.textBox6);
-            lTextBox.Add(this.textBox7);
+            lTextBox.Add(this.txtTenSach);
+            lTextBox.Add(this.txtTenTacGia);
+            lTextBox.Add(this.txtNamXuatBan);
+            lTextBox.Add(this.txtGia);
+            lTextBox.Add(this.txtNhaXuatBan);
+            lTextBox.Add(this.txtGioiHanTuoi);
 
             // quản lý button bằng list
             // lButton.Add(this.button0_Find);
@@ -69,11 +72,13 @@ namespace LibraryManagement.Forms
             //lButton.Add(this.button5_Cancel);
 
             // đổ dữ liệu vào datagridview
-            SQL.ListData.Fill.AllToDataGridView("Sach", ref this.dataGridView1_Info);
+            btnRefresh_Click(sender, e);
 
             // thêm thể loại vào biến chooseTypeBook
-            lTenTheLoai = SQL.ListData.GetDataFromSQL.Sach_SelectOneTableString("select * from TheLoai", "TenTheLoai");
-            lMaTheLoai = SQL.ListData.GetDataFromSQL.Sach_SelectOneTableString("select * from TheLoai", "MaTheLoai");
+            //lTenTheLoai = SQL.ListData.GetDataFromSQL.Sach_SelectOneTableString("select * from TheLoai", "TenTheLoai");
+            //lMaTheLoai = SQL.ListData.GetDataFromSQL.Sach_SelectOneTableString("select * from TheLoai", "MaTheLoai");
+            lTenTheLoai = db.Database.SqlQuery<string>("SELECT TenTheLoai FROM THELOAI").ToList();
+            lMaTheLoai = db.Database.SqlQuery<string>("SELECT MaTheLoai FROM THELOAI").ToList();
             for (int i = 0; i < lTenTheLoai.Count; i++)
             {
                 chooseTypeBook.Items.Add(lTenTheLoai[i]);
@@ -83,8 +88,7 @@ namespace LibraryManagement.Forms
             SetStatus_TextBox(ref lTextBox, false);
 
             LoadInfoToForm();
-
-            // chỉnh mấy cái thuộc tính vớ vẩn
+            btnAddNewTypeBook.Show();
             chooseTypeBook.Hide();
         }
 
@@ -93,7 +97,7 @@ namespace LibraryManagement.Forms
             dataGridView2_DSTheLoai.DataSource = null;
             dataGridView2_DSTheLoai.Refresh();
 
-            textBox1.Text = "";
+            txtMaSach.Text = "";
             for (int i = 0; i < lTextBox.Count; i++)
             {
                 lTextBox[i].Text = "";
@@ -102,42 +106,47 @@ namespace LibraryManagement.Forms
 
         private void LoadInfoToForm()
         {
-            try
+            if (this.dataGridView1_Info.SelectedRows.Count > 0)
             {
-                this.textBox1.Text = this.dataGridView1_Info.SelectedRows[0].Cells["MaSach"].Value.ToString();
-                this.textBox2.Text = this.dataGridView1_Info.SelectedRows[0].Cells["TenSach"].Value.ToString();
-                this.textBox3.Text = this.dataGridView1_Info.SelectedRows[0].Cells["TacGia"].Value.ToString();
-                this.textBox4.Text = this.dataGridView1_Info.SelectedRows[0].Cells["NamXuatBan"].Value.ToString();
-                this.textBox5.Text = this.dataGridView1_Info.SelectedRows[0].Cells["Gia"].Value.ToString();
-                this.textBox6.Text = this.dataGridView1_Info.SelectedRows[0].Cells["NhaXuatBan"].Value.ToString();
-                this.textBox7.Text = this.dataGridView1_Info.SelectedRows[0].Cells["GioiHanTuoi"].Value.ToString();
+                //try
+                //{
+                this.txtMaSach.Text = this.dataGridView1_Info.SelectedRows[0].Cells["MaSach"].Value.ToString();
+                this.txtTenSach.Text = this.dataGridView1_Info.SelectedRows[0].Cells["TenSach"].Value.ToString();
+                this.txtTenTacGia.Text = this.dataGridView1_Info.SelectedRows[0].Cells["TacGia"].Value.ToString();
+                this.txtNamXuatBan.Text = this.dataGridView1_Info.SelectedRows[0].Cells["NamXuatBan"].Value.ToString();
+                this.txtGia.Text = this.dataGridView1_Info.SelectedRows[0].Cells["Gia"].Value.ToString();
+                this.txtNhaXuatBan.Text = this.dataGridView1_Info.SelectedRows[0].Cells["NhaXuatBan"].Value.ToString();
+                this.txtGioiHanTuoi.Text = this.dataGridView1_Info.SelectedRows[0].Cells["GioiHanTuoi"].Value.ToString();
 
-                object tam = SQL.ListData.GetDataFromSQL.Query_All
-                    (@"select top 1 TinhTrang from MuonSach where MaSach = N'"
-                        + this.textBox1.Text + "' order by TinhTrang desc");
-                if (tam != null)
+                //object tam = SQL.ListData.GetDataFromSQL.Query_All
+                //    (@"select top 1 TinhTrang from MuonSach where MaSach = N'"
+                //        + this.textBox1.Text + "' order by TinhTrang desc");
+                bool? tam = db.Database.SqlQuery<bool?>(@"select top 1 TinhTrang from MuonSach where MaSach = N'"
+                        + this.txtMaSach.Text + @"' order by TinhTrang desc").SingleOrDefault();
+                if (tam != null | tam == true)
                 {
-                    this.textBox8.Text = tam.ToString();
+                    this.txtTinhTrang.Text = "True";
                 }
                 else
                 {
-                    this.textBox8.Text = "False";
+                    this.txtTinhTrang.Text = "False";
                 }
 
-                LoadAvatar_Sach(this.textBox1.Text);
-            }
-            catch
-            {
-                this.textBox1.Text = "";
-                this.textBox2.Text = "";
-                this.textBox3.Text = "";
-                this.textBox4.Text = "";
-                this.textBox5.Text = "";
-                this.textBox6.Text = "";
-                this.textBox7.Text = "";
-                this.textBox8.Text = "";
-                LoadAvatar_Sach(this.textBox1.Text);
+                LoadAvatar_Sach(this.txtMaSach.Text);
+                //}
+                //catch
+                //{
+                //    this.txtMaSach.Text = "";
+                //    this.textBox2.Text = "";
+                //    this.textBox3.Text = "";
+                //    this.textBox4.Text = "";
+                //    this.textBox5.Text = "";
+                //    this.textBox6.Text = "";
+                //    this.textBox7.Text = "";
+                //    this.textBox8.Text = "";
+                //    LoadAvatar_Sach(this.txtMaSach.Text);
 
+                //}
             }
         }
 
@@ -146,8 +155,10 @@ namespace LibraryManagement.Forms
             // Hiện avatar
             try
             {
-                string path = (string)SQL.ListData.GetDataFromSQL.Query_All(
-                @"select top 1 DuongDanAnhDaiDien from Sach where MaSach = N'" + _MaSach + "'");
+                //string path = (string)SQL.ListData.GetDataFromSQL.Query_All(
+                //@"select top 1 DuongDanAnhDaiDien from Sach where MaSach = N'" + _MaSach + "'");
+                string path = db.Database.SqlQuery<string>(
+                @"select top 1 DuongDanAnhDaiDien from Sach where MaSach = N'" + _MaSach + "'").SingleOrDefault();
 
                 this.pictureBox1_Avatar.Image = Image.FromFile(path);
             }
@@ -157,25 +168,27 @@ namespace LibraryManagement.Forms
             }
         }
 
-        private SQL.Struct.Sach TextboxTo_Sach()
+        private Models.Sach TextboxTo_Sach()
         {
-            SQL.Struct.Sach t = new SQL.Struct.Sach();
-            t.MaSach = textBox1.Text;
-            t.TenSach = textBox2.Text;
-            t.TacGia = textBox3.Text;
-            t.NamXuatBan = string.IsNullOrWhiteSpace(textBox4.Text) ? 0 : int.Parse(textBox4.Text);
-            t.Gia = string.IsNullOrWhiteSpace(textBox5.Text) ? 0 : int.Parse(textBox5.Text);
-            t.NhaXuatBan = textBox6.Text;
-            t.GioiHanTuoi = string.IsNullOrWhiteSpace(textBox7.Text) ? 0 : int.Parse(textBox7.Text);
+            Models.Sach t = new Models.Sach();
+            t.MaSach = txtMaSach.Text;
+            t.TenSach = txtTenSach.Text;
+            t.TacGia = txtTenTacGia.Text;
+            t.NamXuatBan = string.IsNullOrWhiteSpace(txtNamXuatBan.Text) ? 0 : int.Parse(txtNamXuatBan.Text);
+            t.Gia = string.IsNullOrWhiteSpace(txtGia.Text) ? 0 : int.Parse(txtGia.Text);
+            t.NhaXuatBan = txtNhaXuatBan.Text;
+            t.GioiHanTuoi = string.IsNullOrWhiteSpace(txtGioiHanTuoi.Text) ? 0 : int.Parse(txtGioiHanTuoi.Text);
+            t.DuongDanAnhDaiDien = _pathAvatar;
             return t;
         }
 
         private void EditMode(bool IsHide = false)
         {
-            this.button4_Delete.Enabled = IsHide;
-            this.button5_Cancel.Enabled = IsHide;
-            this.button1_ChangeAvatar.Enabled = IsHide;
-            this.button7_Save.Enabled = IsHide;
+            this.btnDelete.Enabled = IsHide;
+            this.btnCancel.Enabled = IsHide;
+            this.btnChangeAvatar.Enabled = IsHide;
+            this.btnSaveInfo.Enabled = IsHide;
+            this.btnAddNewTypeBook.Enabled = IsHide;
         }
 
         private void SetStatus_TextBox(ref List<TextBox> t, bool IsHide = false)
@@ -206,35 +219,44 @@ namespace LibraryManagement.Forms
 
         private void button7_Save_Click(object sender, EventArgs e)
         {
-            try
-            {
-                SQL.Struct.Sach s = new SQL.Struct.Sach();
-                s.MaSach = this.textBox1.Text;
-                s.TenSach = this.textBox2.Text;
-                s.TacGia = this.textBox3.Text;
-                s.NamXuatBan = int.Parse(this.textBox4.Text);
-                s.Gia = int.Parse(this.textBox5.Text);
-                s.NhaXuatBan = this.textBox6.Text;
-                s.GioiHanTuoi = int.Parse(this.textBox7.Text);
-                s.DuongDanAnhDaiDien = _pathAvatar;
+            Sach s = db.Saches.SingleOrDefault(m => m.MaSach == txtMaSach.Text);
+            s.MaSach = this.txtMaSach.Text;
+            s.TenSach = this.txtTenSach.Text;
+            s.TacGia = this.txtTenTacGia.Text;
+            s.NamXuatBan = int.Parse(this.txtNamXuatBan.Text);
+            s.Gia = int.Parse(this.txtGia.Text);
+            s.NhaXuatBan = this.txtNhaXuatBan.Text;
+            s.GioiHanTuoi = int.Parse(this.txtGioiHanTuoi.Text);
+            s.DuongDanAnhDaiDien = _pathAvatar;
+            db.Database.ExecuteSqlCommand("DELETE Sach_TheLoai WHERE MaSach = N'" + txtMaSach.Text + "'");
+            db.SaveChanges();
 
-                if (SQL.ListData.GetDataFromSQL.Update_ARecord_Sach(s))
+            for (int i = 0; i < dataGridView2_DSTheLoai.Rows.Count; i++)
+            {
+                string maThLoai = dataGridView2_DSTheLoai.Rows[i].Cells[0].Value.ToString();
+                if (!string.IsNullOrWhiteSpace(s.MaSach) | !string.IsNullOrWhiteSpace(maThLoai))
                 {
-                    MessageBox.Show("Lưu thành công!");
-                    this.button1_Refresh_Click(sender, e);
+                    try
+                    {
+                        db.Database.ExecuteSqlCommand("INSERT Sach_TheLoai (MaSach, MaTheLoai) VALUES (N'" + s.MaSach + "', N'" + maThLoai + "')");
+                    }
+                    catch
+                    {
+
+                    }
                 }
             }
-            catch
-            {
-                MessageBox.Show("Không thể lưu vì một hoặc nhiều mục đang để trống");
-            }
-            
+            db.SaveChanges();
+            dataGridView2_DSTheLoai.DataSource = null;
+            dataGridView2_DSTheLoai.Columns.Clear();
+            dataGridView2_DSTheLoai.Refresh();
+            btnRefresh_Click(sender, e);
         }
 
         List<string> test = new List<string>();
 
         private bool _clickEdit = false;
-        private void button3_Edit_Click(object sender, EventArgs e)
+        private void btnEdit_Click(object sender, EventArgs e)
         {
             if (!_clickEdit)
             {
@@ -259,35 +281,31 @@ namespace LibraryManagement.Forms
 
         }
 
-        private void button1_Refresh_Click(object sender, EventArgs e)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
-            SQL.ListData.Fill.AllToDataGridView("Sach", ref this.dataGridView1_Info);
+            //BindingList<Sach> dtSach = new BindingList<Sach>(db.Saches.ToList());
+            //dataGridView1_Info.DataSource = dtSach;
+            dataGridView1_Info.DataSource = new System.Collections.ObjectModel.ObservableCollection<Sach>(db.Saches.ToList()).ToBindingList();
         }
 
         private void dataGridView1_Info_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             LoadInfoToForm();
 
-            SQL.ListData.Fill.SomeToDataGridView(
-                @"select TenTheLoai from TheLoai tl, Sach_TheLoai stl where tl.MaTheLoai = stl.MaTheLoai and stl.MaSach = N'"
-                    + this.textBox1.Text + "'",
-                ref this.dataGridView2_DSTheLoai);
-            //test = SQL.ListData.GetDataFromSQL.SelectOneTableString(
-            //    @"select tl.TenTheLoai from TheLoai tl, Sach_TheLoai stl where tl.MaTheLoai =  = N'" + this.textBox1.Text + "'");
+            _pathAvatar = dataGridView1_Info.Rows[e.RowIndex].Cells["DuongDanAnhDaiDien"].Value as string;
 
-            //int i = 0;
-            //while (i < test.Count)
-            //{
-            //    this.richTextBox1.Text += test[i] + "\n";
-            //    ++i;
-            //}
+
+            dataGridView2_DSTheLoai.DataSource = null;
+            dataGridView2_DSTheLoai.DataSource = db.Database.SqlQuery<TheLoai>("SELECT tl.MaTheLoai, tl.TenTheLoai FROM THELOAI tl, Sach_TheLoai stl WHERE stl.MaSach = N'" + txtMaSach.Text + "' AND stl.MaTheLoai = tl.MaTheLoai").Cast<TheLoai>().ToList();
+            dataGridView2_DSTheLoai.Columns[0].Width = 80;
         }
 
         private void button0_Find_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(this.textBox0_Search.Text))
+            if (!string.IsNullOrWhiteSpace(this.txtSearch.Text))
             {
-                Usefull_Function.Find(this.textBox0_Search.Text, ref dataGridView1_Info, new List<int>() {0, 1, 2, 3, 4, 5, 6 });
+                btnRefresh_Click(sender, e);
+                Usefull_Function.Find(this.txtSearch.Text, ref dataGridView1_Info);
             }
         }
         
@@ -334,7 +352,7 @@ namespace LibraryManagement.Forms
                 }
             }
 
-            this.button1_Refresh_Click(sender, e);
+            btnRefresh_Click(sender, e);
         }
 
         private bool _bCheckClick_AddNewBook = false;
@@ -343,97 +361,104 @@ namespace LibraryManagement.Forms
             if (!_bCheckClick_AddNewBook)
             {
                 _bCheckClick_AddNewBook = true;
-                this.button2_AddNew.Text = "Lưu bản ghi";
+                this.btnAddNew.Text = "Lưu bản ghi";
+
+                _pathAvatar = null;
 
                 EditMode(true);
                 SetStatus_TextBox(ref lTextBox, true);
 
                 dataGridView1_Info.Enabled = false;
-                this.button3_Edit.Enabled = false;
-                this.button4_Delete.Enabled = false;
-                this.button7_Save.Enabled = false;
+                this.btnEdit.Enabled = false;
+                this.btnDelete.Enabled = false;
+                this.btnSaveInfo.Enabled = false;
 
-                textBox8.Text = "True";
+                txtTinhTrang.Text = "True";
                 EmptyInfo();
-                textBox1.Text = SQL.ListData.GetDataFromSQL.Sach_GetNextIndex();
+                txtMaSach.Text = SQL.ListData.GetDataFromSQL.Sach_GetNextIndex();
 
 
                 //dataGridView2_DSTheLoai.DataSource = null;
                 //dataGridView2_DSTheLoai.Refresh();
 
-                button8_AddNewTypeBook.Show();
+                btnAddNewTypeBook.Show();
             }
             else
             {
                 _bCheckClick_AddNewBook = false;
-                this.button2_AddNew.Text = "Thêm mới";
-                this.button7_Save.Enabled = true;
-                button8_AddNewTypeBook.Hide();
+                this.btnAddNew.Text = "Thêm mới";
+                this.btnSaveInfo.Enabled = true;
+                //btnAddNewTypeBook.Hide();
 
                 dataGridView1_Info.Enabled = true;
-                this.button3_Edit.Enabled = true;
-                this.button4_Delete.Enabled = true;
-
-                string sErrorMessage = "Tình trạng:\n\n";
+                this.btnEdit.Enabled = true;
+                this.btnDelete.Enabled = true;
 
                 // tạo bản ghi cho cuốn sách mới
-                SQL.Struct.Sach t = TextboxTo_Sach();
-                if (SQL.ListData.GetDataFromSQL.Sach_CreateNewRecord(t))
-                {
-                    sErrorMessage += "\n- Tạo bản ghi sách mới thành công!\n";
-                }
-                else
-                    sErrorMessage += "\n- Tạo bản ghi sách thất bại!\n";
-
+                Sach t = TextboxTo_Sach();
+                db.Saches.Add(t);
+                db.SaveChanges();
                 // lưu thể loại cho cuốn sách mới
-                SQL.Struct.Sach_TheLoai stl;
                 for (int i = 0; i < chooseTypeBook.Items.Count; i++)
                 {
                     if (chooseTypeBook.GetItemChecked(i))
                     {
-                        stl = new SQL.Struct.Sach_TheLoai();
-                        stl.MaSach = textBox1.Text;
-                        stl.MaTheLoai = lMaTheLoai[i];
-
-                        if (SQL.ListData.GetDataFromSQL.Sach_TheLoai_CreateNewRecord(stl))
-                        {
-                            sErrorMessage += "\n- Tạo thể loại \"" + lTenTheLoai[i] + "\" thành công!";
-                        }
-                        else
-                        {
-                            sErrorMessage += "\n- Thất bại tạo thể loại \"" + lTenTheLoai[i] + "\"!";
-                        }
+                        db.Database.ExecuteSqlCommand("INSERT Sach_TheLoai (MaSach, MaTheLoai) VALUES ('" + t.MaSach + "', '" + lMaTheLoai[i] + "')");
                     }
                 }
+
+                db.SaveChanges();
+
                 dataGridView2_DSTheLoai.DataSource = null;
-                dataGridView2_DSTheLoai.Columns.Remove("TheLoai");
-                MessageBox.Show(sErrorMessage);
+                dataGridView2_DSTheLoai.Columns.Clear();
+                dataGridView2_DSTheLoai.Refresh();
+                MessageBox.Show("Lưu thành công!");
+                btnEdit_Click(sender, e);
+                btnRefresh_Click(sender, e);
             }
         }
 
         private bool bHelpAddTypeBook = true;
-        private void button8_AddNewTypeBook_Click(object sender, EventArgs e)
+        private void btnAddNewTypeBook_Click(object sender, EventArgs e)
         {
             if (bHelpAddTypeBook)
             {
                 chooseTypeBook.Show();
-                button8_AddNewTypeBook.Text = "Lưu ds thể loại";
+                btnAddNewTypeBook.Text = "Lưu ds thể loại";
                 bHelpAddTypeBook = false;
             }
             else
             {
                 bHelpAddTypeBook = true;
                 chooseTypeBook.Hide();
-                button8_AddNewTypeBook.Text = "Thêm thể loại";
-                dataGridView2_DSTheLoai.Columns.Add("TheLoai", "Thể loại");
+                btnAddNewTypeBook.Text = "Thêm thể loại";
+                
+                for (int i = 0; i < dataGridView2_DSTheLoai.Rows.Count; i++)
+                {
+                    string ldata = dataGridView2_DSTheLoai.Rows[i].Cells[1].Value.ToString();
+                    string lchoose = chooseTypeBook.Items.ToString();
+                    if (string.Equals(ldata, lchoose))
+                    {
+                        chooseTypeBook.SetItemChecked(i, true);
+                    }
+                }
+                dataGridView2_DSTheLoai.DataSource = null;
+                dataGridView2_DSTheLoai.Columns.Clear();
+                dataGridView2_DSTheLoai.Columns.Add("MaTheLoai", "Mã thể loại");
+                dataGridView2_DSTheLoai.Columns.Add("TenTheLoai", "Tên thể loại");
+
+                for (int i = 0; i < dataGridView2_DSTheLoai.Rows.Count; i = 0)
+                {
+                    dataGridView2_DSTheLoai.Rows.RemoveAt(i);
+                }
                 for (int i = 0; i < chooseTypeBook.Items.Count; i++)
                 {
                     if (chooseTypeBook.GetItemChecked(i))
                     {
-                        
-                        dataGridView2_DSTheLoai.Rows.Add(chooseTypeBook.Items[i].ToString());
+                        dataGridView2_DSTheLoai.Rows.Add(lMaTheLoai[i], chooseTypeBook.Items[i].ToString());
                     }
                 }
+                dataGridView2_DSTheLoai.Refresh();
             }
         }
     }

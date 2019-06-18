@@ -33,8 +33,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,11 +65,23 @@
     <Compile Include="Forms\BorrowBook.designer.cs">
       <DependentUpon>BorrowBook.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormTest.designer.cs">
+      <DependentUpon>FormTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\GiveBackBook.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\GiveBackBook.designer.cs">
       <DependentUpon>GiveBackBook.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Loading.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Loading.designer.cs">
+      <DependentUpon>Loading.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\LoginFormLibrary.cs">
       <SubType>Form</SubType>
@@ -91,6 +114,16 @@
       <DependentUpon>PasswordChangingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Usefull_Function.cs" />
+    <Compile Include="Models\DbLibraryManagement.cs" />
+    <Compile Include="Models\MuonSach.cs" />
+    <Compile Include="Models\NganHang.cs" />
+    <Compile Include="Models\NguoiDung.cs" />
+    <Compile Include="Models\NguoiDung_NganHang.cs" />
+    <Compile Include="Models\NhanSach.cs" />
+    <Compile Include="Models\NhanVien.cs" />
+    <Compile Include="Models\NhanVien_NganHang.cs" />
+    <Compile Include="Models\Sach.cs" />
+    <Compile Include="Models\TheLoai.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQL\ConnectSQL\SQLConnection_Library.cs" />
@@ -120,8 +153,14 @@
     <EmbeddedResource Include="Forms\BorrowBook.resx">
       <DependentUpon>BorrowBook.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormTest.resx">
+      <DependentUpon>FormTest.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\GiveBackBook.resx">
       <DependentUpon>GiveBackBook.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Loading.resx">
+      <DependentUpon>Loading.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoginFormLibrary.resx">
       <DependentUpon>LoginFormLibrary.cs</DependentUpon>
@@ -148,6 +187,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -157,53 +197,35 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="temp.docx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\2aaf5af8.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Resources\4-confetti-background-4.png" />
     <None Include="Resources\25776-7-delete-button-image.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\13445437_479927728876103_5741817774232375742_n.jpg" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Resources\abstract-tribal-background-png714-41e4-9345-07efd2ad87a5.png" />
     <None Include="Resources\ahihihiii %282%29.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Resources\arrow-right.png" />
     <None Include="Resources\back-png-image-14983.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Resources\brochure-graphic-design-background-png-hd-cyberuse-pertaining-to-brochure-graphic-design-background-png-hd.png" />
+    <None Include="Resources\close-hi.png" />
     <None Include="Resources\Edit-validated-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\erase-pngrepo-com.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\find-148857_640.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Life-Sized-Rem-Statue-03.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\NoAvartar.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\on-the-table-at-library-blurred-background_rrchdxfyx_thumbnail-full01.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="Resources\orange-polygonal-background-fade-3.png" />
     <None Include="Resources\restart-png-open-2000.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\save-png-image-26336.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="ThucTapNhom_CreateDatabase_KhaiVu_LibraryManagement.sql" />
     <Content Include="ThucTapNhom_Data_KhaiVu_LibraryManagement.sql" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

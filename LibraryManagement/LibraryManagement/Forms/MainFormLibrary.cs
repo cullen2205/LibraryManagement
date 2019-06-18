@@ -27,7 +27,7 @@ namespace LibraryManagement.Forms
         {
             InitializeComponent();
             HideEditInfomations(false);
-            this.MaximizeBox = false;
+            //this.MaximizeBox = false;
 
             Data = ob;
             UserEmployeeAdmin = LoginFormLibraryManagement.UserEmployeeAdmin;
@@ -355,6 +355,10 @@ namespace LibraryManagement.Forms
             this.Hide();
             formGiveBackBook = new GiveBackBook();
             formGiveBackBook.Show();
+        }
+
+        private void MainFormLibrary_Load(object sender, EventArgs e)
+        {
         }
     }
 }

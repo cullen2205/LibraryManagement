@@ -93,9 +93,39 @@ namespace LibraryManagement.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ahihihiii {
+        internal static System.Drawing.Bitmap _4_confetti_background_4 {
             get {
-                object obj = ResourceManager.GetObject("ahihihiii", resourceCulture);
+                object obj = ResourceManager.GetObject("_4_confetti_background_4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap abstract_tribal_background_png714_41e4_9345_07efd2ad87a5 {
+            get {
+                object obj = ResourceManager.GetObject("abstract_tribal_background_png714_41e4_9345_07efd2ad87a5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ahihihiii__2_ {
+            get {
+                object obj = ResourceManager.GetObject("ahihihiii__2_", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_right {
+            get {
+                object obj = ResourceManager.GetObject("arrow_right", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -106,6 +136,27 @@ namespace LibraryManagement.Properties {
         internal static System.Drawing.Bitmap back_png_image_14983 {
             get {
                 object obj = ResourceManager.GetObject("back_png_image_14983", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap brochure_graphic_design_background_png_hd_cyberuse_pertaining_to_brochure_graphic_design_background_png_hd {
+            get {
+                object obj = ResourceManager.GetObject("brochure_graphic_design_background_png_hd_cyberuse_pertaining_to_brochure_graphic" +
+                        "_design_background_png_hd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap close_hi {
+            get {
+                object obj = ResourceManager.GetObject("close_hi", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -166,6 +217,16 @@ namespace LibraryManagement.Properties {
         internal static System.Drawing.Bitmap on_the_table_at_library_blurred_background_rrchdxfyx_thumbnail_full01 {
             get {
                 object obj = ResourceManager.GetObject("on_the_table_at_library_blurred_background_rrchdxfyx_thumbnail_full01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap orange_polygonal_background_fade_3 {
+            get {
+                object obj = ResourceManager.GetObject("orange_polygonal_background_fade_3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

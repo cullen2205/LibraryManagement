@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using LibraryManagement.Models;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
 
 namespace LibraryManagement.Forms
 {
@@ -14,33 +17,32 @@ namespace LibraryManagement.Forms
     {
         private List<TextBox> lTextbox;
         private EnumMyStruct eTypeManage;
+        private DbLibraryManagement db = new DbLibraryManagement();
         public Manage_UserEmployee(EnumMyStruct _typeManage) // only manage User or Employee
         {
             InitializeComponent();
+            //this.MaximizeBox = false;
             eTypeManage = _typeManage;
             this.Text += _typeManage == EnumMyStruct.NguoiDung ? "người dùng" : "nhân viên";
         }
 
         private void Manage_UserEmployee_Load(object sender, EventArgs e)
         {
-            this.MaximizeBox = false;
-            this.MaximumSize = this.MinimumSize = new Size(1320, 620);
-
             lTextbox = new List<TextBox>();
-            lTextbox.Add(textBox2_SoCMND);
+            lTextbox.Add(txtSoCMND);
             // lTextbox.Add(textBox3_TenDangNhap);
-            lTextbox.Add(textBox4_HoTen);
-            lTextbox.Add(textBox5_SoDienThoai);
-            lTextbox.Add(textBox6_DiaChi);
-            lTextbox.Add(textBox7_TenNBH);
-            lTextbox.Add(textBox8_SDT_NBH);
-            lTextbox.Add(textBox9_DiaChiNBH);
+            lTextbox.Add(txtHoTen);
+            lTextbox.Add(txtSoDienThoai);
+            lTextbox.Add(txtDiaChi);
+            lTextbox.Add(txtTenNBH);
+            lTextbox.Add(txtSDTNBH);
+            lTextbox.Add(txtDiaChiNBH);
 
-            textBox3_TenDangNhap.Enabled = false;
+            txtTenDangNhap.Enabled = false;
 
             EditMode(false);
             HideInfo(eTypeManage);
-            SQL.ListData.Fill.AllToDataGridView(eTypeManage.ToString(), ref this.dataGridView1);
+            btnReset_Click(sender, e);
         }
 
         private void ChangeState_ListTextbox(ref List<TextBox> l, bool _bState = false)
@@ -59,7 +61,7 @@ namespace LibraryManagement.Forms
                 l[i].Text = "";
             }
 
-            textBox3_TenDangNhap.Text = "";
+            txtTenDangNhap.Text = "";
             radioButton1.Checked = radioButton2.Checked = false;
             dateTimePicker1_NgaySinh.Value = DateTime.Now;
             checkBox1.Checked = false;
@@ -73,9 +75,9 @@ namespace LibraryManagement.Forms
                     this.label8.Show();
                     this.label9.Show();
                     this.label10.Show();
-                    this.textBox7_TenNBH.Show();
-                    this.textBox8_SDT_NBH.Show();
-                    this.textBox9_DiaChiNBH.Show();
+                    this.txtTenNBH.Show();
+                    this.txtSDTNBH.Show();
+                    this.txtDiaChiNBH.Show();
 
                     this.label12.Hide();
                     this.checkBox1.Hide();
@@ -84,9 +86,9 @@ namespace LibraryManagement.Forms
                     this.label8.Hide();
                     this.label9.Hide();
                     this.label10.Hide();
-                    this.textBox7_TenNBH.Hide();
-                    this.textBox8_SDT_NBH.Hide();
-                    this.textBox9_DiaChiNBH.Hide();
+                    this.txtTenNBH.Hide();
+                    this.txtSDTNBH.Hide();
+                    this.txtDiaChiNBH.Hide();
 
                     this.label12.Show();
                     this.checkBox1.Show();
@@ -101,28 +103,28 @@ namespace LibraryManagement.Forms
                 switch (eTypeManage)
                 {
                     case EnumMyStruct.NguoiDung:
-                        this.textBox2_SoCMND.Text = this.dataGridView1.Rows[_index].Cells["SoCMND"].Value.ToString();
-                        this.textBox3_TenDangNhap.Text = this.dataGridView1.Rows[_index].Cells["TenDangNhap"].Value.ToString();
-                        this.textBox4_HoTen.Text = this.dataGridView1.Rows[_index].Cells["HoTen"].Value.ToString();
-                        this.textBox5_SoDienThoai.Text = this.dataGridView1.Rows[_index].Cells["SoDienThoai"].Value.ToString();
-                        this.textBox6_DiaChi.Text = this.dataGridView1.Rows[_index].Cells["DiaChiThuongTru"].Value.ToString();
-                        this.textBox7_TenNBH.Text = this.dataGridView1.Rows[_index].Cells["TenNguoiBaoHo"].Value.ToString();
-                        this.textBox8_SDT_NBH.Text = this.dataGridView1.Rows[_index].Cells["SDTNguoiBaoHo"].Value.ToString();
-                        this.textBox9_DiaChiNBH.Text = this.dataGridView1.Rows[_index].Cells["DiaChiNguoiBaoHo"].Value.ToString();
+                        this.txtSoCMND.Text = this.dataGridView1.Rows[_index].Cells["SoCMND"].Value.ToString();
+                        this.txtTenDangNhap.Text = this.dataGridView1.Rows[_index].Cells["TenDangNhap"].Value.ToString();
+                        this.txtHoTen.Text = this.dataGridView1.Rows[_index].Cells["HoTen"].Value.ToString();
+                        this.txtSoDienThoai.Text = this.dataGridView1.Rows[_index].Cells["SoDienThoai"].Value.ToString();
+                        this.txtDiaChi.Text = this.dataGridView1.Rows[_index].Cells["DiaChiThuongTru"].Value.ToString();
+                        this.txtTenNBH.Text = this.dataGridView1.Rows[_index].Cells["TenNguoiBaoHo"].Value.ToString();
+                        this.txtSDTNBH.Text = this.dataGridView1.Rows[_index].Cells["SDTNguoiBaoHo"].Value.ToString();
+                        this.txtDiaChiNBH.Text = this.dataGridView1.Rows[_index].Cells["DiaChiNguoiBaoHo"].Value.ToString();
 
                         radioButton1.Checked = bool.Parse(this.dataGridView1.Rows[_index].Cells["GioiTinh"].Value.ToString());
                         radioButton2.Checked = !radioButton1.Checked;
                         this.dateTimePicker1_NgaySinh.Value = DateTime.Parse(this.dataGridView1.Rows[_index].Cells["NgaySinh"].Value.ToString());
-                        this.textBox10_KieuTaiKhoan.Text = "Người dùng";
+                        this.txtKieuTaiKhoan.Text = "Người dùng";
 
                         break;
 
                     case EnumMyStruct.NhanVien:
-                        this.textBox2_SoCMND.Text = this.dataGridView1.Rows[_index].Cells["SoCMND"].Value.ToString();
-                        this.textBox3_TenDangNhap.Text = this.dataGridView1.Rows[_index].Cells["MaNhanVien"].Value.ToString();
-                        this.textBox4_HoTen.Text = this.dataGridView1.Rows[_index].Cells["TenNhanVien"].Value.ToString();
-                        this.textBox5_SoDienThoai.Text = this.dataGridView1.Rows[_index].Cells["SoDienThoai"].Value.ToString();
-                        this.textBox6_DiaChi.Text = this.dataGridView1.Rows[_index].Cells["DiaChi"].Value.ToString();
+                        this.txtSoCMND.Text = this.dataGridView1.Rows[_index].Cells["SoCMND"].Value.ToString();
+                        this.txtTenDangNhap.Text = this.dataGridView1.Rows[_index].Cells["MaNhanVien"].Value.ToString();
+                        this.txtHoTen.Text = this.dataGridView1.Rows[_index].Cells["TenNhanVien"].Value.ToString();
+                        this.txtSoDienThoai.Text = this.dataGridView1.Rows[_index].Cells["SoDienThoai"].Value.ToString();
+                        this.txtDiaChi.Text = this.dataGridView1.Rows[_index].Cells["DiaChi"].Value.ToString();
 
                         radioButton1.Checked = bool.Parse(this.dataGridView1.Rows[_index].Cells["GioiTinh"].Value.ToString());
                         radioButton2.Checked = !radioButton1.Checked;
@@ -130,7 +132,7 @@ namespace LibraryManagement.Forms
                         this.dateTimePicker1_NgaySinh.Value = DateTime.Parse(this.dataGridView1.Rows[_index].Cells["NgaySinh"].Value.ToString());
 
                         // kiểu tài khoản
-                        this.textBox10_KieuTaiKhoan.Text = bool.Parse(this.dataGridView1.Rows[_index].Cells["LaQuanTriVien"].Value.ToString()) == true ? "Quản trị viên" : "Nhân viên";
+                        this.txtKieuTaiKhoan.Text = bool.Parse(this.dataGridView1.Rows[_index].Cells["LaQuanTriVien"].Value.ToString()) == true ? "Quản trị viên" : "Nhân viên";
                         
                         break;
 
@@ -151,15 +153,15 @@ namespace LibraryManagement.Forms
             }
             catch
             {
-                this.textBox2_SoCMND.Text = "";
-                this.textBox3_TenDangNhap.Text = "";
-                this.textBox4_HoTen.Text = "";
-                this.textBox5_SoDienThoai.Text = "";
-                this.textBox6_DiaChi.Text = "";
-                this.textBox7_TenNBH.Text = "";
-                this.textBox8_SDT_NBH.Text = "";
-                this.textBox9_DiaChiNBH.Text = "";
-                this.textBox10_KieuTaiKhoan.Text = "";
+                this.txtSoCMND.Text = "";
+                this.txtTenDangNhap.Text = "";
+                this.txtHoTen.Text = "";
+                this.txtSoDienThoai.Text = "";
+                this.txtDiaChi.Text = "";
+                this.txtTenNBH.Text = "";
+                this.txtSDTNBH.Text = "";
+                this.txtDiaChiNBH.Text = "";
+                this.txtKieuTaiKhoan.Text = "";
 
                 this.pictureBox1_Avatar.Image = Properties.Resources.NoAvartar;
             }
@@ -170,32 +172,38 @@ namespace LibraryManagement.Forms
             switch (_eType)
             {
                 case EnumMyStruct.NguoiDung:
-                    SQL.Struct.NguoiDung nd = new SQL.Struct.NguoiDung();
-                    nd.SoCMND = string.IsNullOrWhiteSpace(textBox2_SoCMND.Text) ? null : textBox2_SoCMND.Text;
-                    nd.TenDangNhap = string.IsNullOrWhiteSpace(textBox3_TenDangNhap.Text) ? null : textBox3_TenDangNhap.Text;
-                    nd.MatKhau = null;
-                    nd.HoTen = string.IsNullOrWhiteSpace(textBox4_HoTen.Text) ? null : textBox4_HoTen.Text;
-                    nd.SoDienThoai = string.IsNullOrWhiteSpace(textBox5_SoDienThoai.Text) ? null : textBox5_SoDienThoai.Text;
-                    nd.DiaChiThuongTru = string.IsNullOrWhiteSpace(textBox6_DiaChi.Text) ? null : textBox6_DiaChi.Text;
-                    nd.GioiTinh = radioButton1.Checked ? radioButton1.Checked : radioButton2.Checked;
-                    nd.NgaySinh = this.dateTimePicker1_NgaySinh.Value;
-                    nd.TenNguoiBaoHo = string.IsNullOrWhiteSpace(textBox7_TenNBH.Text) ? null : textBox7_TenNBH.Text;
-                    nd.SDTNguoiBaoHo = string.IsNullOrWhiteSpace(textBox8_SDT_NBH.Text) ? null : textBox8_SDT_NBH.Text;
-                    nd.DiaChiNguoiBaoHo = string.IsNullOrWhiteSpace(textBox9_DiaChiNBH.Text) ? null : textBox9_DiaChiNBH.Text;
-                    nd.DuongDanAnhDaiDien = null;
+                    Models.NguoiDung nd = db.NguoiDungs.Find(txtSoCMND.Text);
+                    if (nd == null)
+                    {
+                        nd = new NguoiDung();
+                        nd.MatKhau = txtTenDangNhap.Text;
+                    }
+                    nd.SoCMND = txtSoCMND.Text;
+                    nd.TenDangNhap = txtTenDangNhap.Text;
+                    nd.HoTen = txtHoTen.Text;
+                    nd.SoDienThoai = txtSoDienThoai.Text;
+                    nd.DiaChiThuongTru = txtDiaChi.Text;
+                    nd.GioiTinh = radioButton1.Checked ? true : false;
+                    nd.NgaySinh = dateTimePicker1_NgaySinh.Value;
+                    nd.TenNguoiBaoHo = txtTenNBH.Text;
+                    nd.SDTNguoiBaoHo = txtSDTNBH.Text;
+                    nd.DiaChiNguoiBaoHo = txtDiaChiNBH.Text;
                     return nd;
                 case EnumMyStruct.NhanVien:
-                    SQL.Struct.NhanVien nv = new SQL.Struct.NhanVien();
-                    nv.MaNhanVien = string.IsNullOrWhiteSpace(textBox3_TenDangNhap.Text) ? null : textBox3_TenDangNhap.Text;
-                    nv.MatKhau = null;
-                    nv.TenNhanVien = string.IsNullOrWhiteSpace(textBox4_HoTen.Text) ? null : textBox4_HoTen.Text;
-                    nv.SoCMND = string.IsNullOrWhiteSpace(textBox2_SoCMND.Text) ? null : textBox2_SoCMND.Text;
-                    nv.DiaChi = string.IsNullOrWhiteSpace(textBox6_DiaChi.Text) ? null : textBox6_DiaChi.Text;
-                    nv.SoDienThoai = string.IsNullOrWhiteSpace(textBox5_SoDienThoai.Text) ? null : textBox5_SoDienThoai.Text;
-                    nv.GioiTinh = radioButton1.Checked ? radioButton1.Checked : radioButton2.Checked;
-                    nv.NgaySinh = this.dateTimePicker1_NgaySinh.Value;
-                    nv.LaQuanTriVien = this.checkBox1.Checked;
-                    
+                    Models.NhanVien nv = db.NhanViens.Find(txtTenDangNhap.Text);
+                    if (nv == null)
+                    {
+                        nv = new NhanVien();
+                        nv.MatKhau = txtTenDangNhap.Text;
+                    }
+                    nv.MaNhanVien = txtTenDangNhap.Text;
+                    nv.TenNhanVien = txtHoTen.Text;
+                    nv.SoCMND = txtSoCMND.Text;
+                    nv.DiaChi = txtDiaChi.Text;
+                    nv.SoDienThoai = txtSoDienThoai.Text;
+                    nv.GioiTinh = radioButton1.Checked ? true : false;
+                    nv.NgaySinh = dateTimePicker1_NgaySinh.Value;
+                    nv.LaQuanTriVien = checkBox1.Checked;
                     return nv;
                 default:
                     return null;
@@ -204,7 +212,7 @@ namespace LibraryManagement.Forms
 
         private void EditMode(bool _Edit = false)
         {
-            button5_SaveChange.Enabled = button8_Cancel.Enabled = _Edit;
+            btnSaveChange.Enabled = btnCancel.Enabled = _Edit;
             ChangeState_ListTextbox(ref lTextbox, _Edit);
             this.radioButton1.Enabled = this.radioButton2.Enabled = _Edit;
             this.dateTimePicker1_NgaySinh.Enabled = _Edit;
@@ -231,9 +239,42 @@ namespace LibraryManagement.Forms
             this.Dispose();
         }
 
-        private void button2_Reset_Click(object sender, EventArgs e)
+        private void btnReset_Click(object sender, EventArgs e)
         {
-            SQL.ListData.Fill.AllToDataGridView(eTypeManage.ToString(), ref this.dataGridView1);
+            // SQL.ListData.Fill.AllToDataGridView(eTypeManage.ToString(), ref this.dataGridView1);
+            dataGridView1.DataSource = null;
+
+            switch (eTypeManage)
+            {
+                case EnumMyStruct.MuonSach:
+                    break;
+                case EnumMyStruct.NganHang:
+                    break;
+                case EnumMyStruct.NguoiDung:
+                    //BindingList<NguoiDung> blnguoidung = new BindingList<NguoiDung>(db.NguoiDungs.ToList());
+                    //dataGridView1.DataSource = blnguoidung;
+                    dataGridView1.DataSource = new System.Collections.ObjectModel.ObservableCollection<NguoiDung>(db.NguoiDungs.ToList()).ToBindingList();
+                    break;
+                case EnumMyStruct.NguoiDung_NganHang:
+                    break;
+                case EnumMyStruct.NhanSach:
+                    break;
+                case EnumMyStruct.NhanVien:
+                    //BindingList<NhanVien> blnhanvien = new BindingList<NhanVien>(db.NhanViens.ToList());
+                    //dataGridView1.DataSource = blnhanvien;
+                    dataGridView1.DataSource = new System.Collections.ObjectModel.ObservableCollection<NhanVien>(db.NhanViens.ToList()).ToBindingList();
+                    break;
+                case EnumMyStruct.NhanVien_NganHang:
+                    break;
+                case EnumMyStruct.Sach:
+                    break;
+                case EnumMyStruct.Sach_TheLoai:
+                    break;
+                case EnumMyStruct.TheLoai:
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
@@ -261,8 +302,8 @@ namespace LibraryManagement.Forms
         private void button8_Cancel_Click(object sender, EventArgs e)
         {
             EditMode(false);
-            this.button6_Delete.Enabled = true;
-            this.button4_Edit.Enabled = true;
+            this.btnDelete.Enabled = true;
+            this.btnEdit.Enabled = true;
         }
 
         private void button6_Delete_Click(object sender, EventArgs e)
@@ -275,7 +316,7 @@ namespace LibraryManagement.Forms
             {
                 case EnumMyStruct.NguoiDung:
                     // thử xoá bản ghi trước nếu nó không có liên kết
-                    if (!SQL.ListData.GetDataFromSQL.DeleteRecord_NguoiDung(this.textBox2_SoCMND.Text))
+                    if (!SQL.ListData.GetDataFromSQL.DeleteRecord_NguoiDung(this.txtSoCMND.Text))
                     {
                         if (DialogResult.OK == 
                             MessageBox.Show(
@@ -285,7 +326,7 @@ namespace LibraryManagement.Forms
                             // xoá bản ghi trong nhân viên _ ngân hàng
                             if (!SQL.ListData.GetDataFromSQL.DeleteRecord_NguoiDung_NganHang(
                                 SQL.Struct.NguoiDung_NganHang.eNguoiDung_NganHang.SoCMND,
-                                this.textBox2_SoCMND.Text))
+                                this.txtSoCMND.Text))
                             {
                                 sErrorMesage += "\n- Không thể xoá bản ghi trong table NhanVien_NganHang!";
                             }
@@ -294,7 +335,7 @@ namespace LibraryManagement.Forms
 
                             // sửa bản ghi trong bảng mượn sách
                             if (!SQL.ListData.GetDataFromSQL.MuonSach_UpdateAllRecord_HaveTableX(SQL.Struct.MuonSach.eMuonSach.SoCMND,
-                                "null", SQL.Struct.MuonSach.eMuonSach.SoCMND, this.textBox2_SoCMND.Text))
+                                "null", SQL.Struct.MuonSach.eMuonSach.SoCMND, this.txtSoCMND.Text))
                             {
                                 sErrorMesage += "\n- Không thể sửa bản ghi trong table MuonSach!";
                             }
@@ -302,7 +343,7 @@ namespace LibraryManagement.Forms
                                 sErrorMesage += "\n- Sửa bản ghi trong table MuonSach thành công!";
 
                             // xoá trong bảng người dùng
-                            if (!SQL.ListData.GetDataFromSQL.DeleteRecord_NguoiDung(this.textBox2_SoCMND.Text))
+                            if (!SQL.ListData.GetDataFromSQL.DeleteRecord_NguoiDung(this.txtSoCMND.Text))
                             {
                                 sErrorMesage += "\n- Không thể xoá bản ghi trong table NguoiDung!";
                             }
@@ -321,7 +362,7 @@ namespace LibraryManagement.Forms
                     break;
                 case EnumMyStruct.NhanVien:
                     // thử xoá bản ghi trước nếu nó không có liên kết
-                    if (!SQL.ListData.GetDataFromSQL.DeleteRecord_NhanVien(this.textBox3_TenDangNhap.Text))
+                    if (!SQL.ListData.GetDataFromSQL.DeleteRecord_NhanVien(this.txtTenDangNhap.Text))
                     {
                         if (DialogResult.OK ==
                             MessageBox.Show(
@@ -331,7 +372,7 @@ namespace LibraryManagement.Forms
                             // Nhân viên: xoá bảng nhân viên _ ngân hàng, sửa bảng nhận sách + mượn sách
 
                             // xoá trong bảng nhân viên _ ngân hàng
-                            if (!SQL.ListData.GetDataFromSQL.DeleteRecord_NhanVien_NganHang(SQL.Struct.NhanVien_NganHang.eNhanVien_NganHang.MaNhanVien, this.textBox3_TenDangNhap.Text))
+                            if (!SQL.ListData.GetDataFromSQL.DeleteRecord_NhanVien_NganHang(SQL.Struct.NhanVien_NganHang.eNhanVien_NganHang.MaNhanVien, this.txtTenDangNhap.Text))
                             {
                                 sErrorMesage += "\n- Không thể xoá bản ghi trong table NhanVien_NganHang!";
                             }
@@ -342,7 +383,7 @@ namespace LibraryManagement.Forms
 
                             // sửa trong bảng nhận sách
                             if (!SQL.ListData.GetDataFromSQL.NhanSach_UpdateAllRecord_HaveTableX(SQL.Struct.NhanSach.eNhanSach.MaNhanVien,
-                                "null", SQL.Struct.NhanSach.eNhanSach.MaNhanVien, this.textBox3_TenDangNhap.Text))
+                                "null", SQL.Struct.NhanSach.eNhanSach.MaNhanVien, this.txtTenDangNhap.Text))
                             {
                                 sErrorMesage += "\n- Không thể sửa bản ghi trong table MuonSach!";
                             }
@@ -351,7 +392,7 @@ namespace LibraryManagement.Forms
 
                             // sửa trong bảng mượn sách
                             if (!SQL.ListData.GetDataFromSQL.MuonSach_UpdateAllRecord_HaveTableX(SQL.Struct.MuonSach.eMuonSach.MaNhanVien,
-                                "null", SQL.Struct.MuonSach.eMuonSach.MaNhanVien, this.textBox3_TenDangNhap.Text))
+                                "null", SQL.Struct.MuonSach.eMuonSach.MaNhanVien, this.txtTenDangNhap.Text))
                             {
                                 sErrorMesage += "\n- Không thể sửa bản ghi trong table MuonSach!";
                             }
@@ -359,7 +400,7 @@ namespace LibraryManagement.Forms
                                 sErrorMesage += "\n- Sửa bản ghi trong table MuonSach thành công!";
 
                             // xoá bản ghi trong table nhân viên
-                            if (!SQL.ListData.GetDataFromSQL.DeleteRecord_NhanVien(this.textBox3_TenDangNhap.Text))
+                            if (!SQL.ListData.GetDataFromSQL.DeleteRecord_NhanVien(this.txtTenDangNhap.Text))
                             {
                                 sErrorMesage += "\n- Không thể xoá bản ghi trong table NhanVien!";
                             }
@@ -390,13 +431,13 @@ namespace LibraryManagement.Forms
                 switch (eTypeManage)
                 {
                     case EnumMyStruct.NguoiDung:
-                        this.textBox3_TenDangNhap.Enabled = true;
+                        this.txtTenDangNhap.Enabled = true;
                         EmptyInput(ref lTextbox);
                         break;
 
                     case EnumMyStruct.NhanVien:
                         EmptyInput(ref lTextbox);
-                        this.textBox3_TenDangNhap.Text = SQL.ListData.GetDataFromSQL.NhanVien_GetNext_MaNhanVien();
+                        this.txtTenDangNhap.Text = SQL.ListData.GetDataFromSQL.NhanVien_GetNext_MaNhanVien();
                         break;
 
                     default:
@@ -404,10 +445,10 @@ namespace LibraryManagement.Forms
                 }
                 bSaveNewRecord = true;
                 EditMode(true);
-                this.button3_AddNew.Text = "Lưu bản ghi mới";
-                this.button4_Edit.Enabled = false;
-                this.button5_SaveChange.Enabled = false;
-                this.button6_Delete.Enabled = false;
+                this.btnAddNew.Text = "Lưu bản ghi mới";
+                this.btnEdit.Enabled = false;
+                this.btnSaveChange.Enabled = false;
+                this.btnDelete.Enabled = false;
                 this.dataGridView1.Enabled = false;
             }
             else
@@ -416,36 +457,26 @@ namespace LibraryManagement.Forms
                 switch (eTypeManage)
                 {
                     case EnumMyStruct.NguoiDung:
-                        SQL.Struct.NguoiDung nd = AddDataToObject(EnumMyStruct.NguoiDung) as SQL.Struct.NguoiDung;
-                        if (SQL.ListData.GetDataFromSQL.NguoiDung_AddNewRecord(nd))
-                        {
-                            MessageBox.Show("Tạo bản ghi mới thành công!");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Tạo bản ghi thất bại!");
-                        }
+                        Models.NguoiDung nd = AddDataToObject(EnumMyStruct.NguoiDung) as Models.NguoiDung;
+                        db.NguoiDungs.AddOrUpdate(nd);
+                        db.SaveChanges();
+                        MessageBox.Show("Tạo bản ghi mới thành công!");
 
-                        this.textBox3_TenDangNhap.Enabled = false;
+                        this.txtTenDangNhap.Enabled = false;
                         break;
 
                     case EnumMyStruct.NhanVien:
-                        SQL.Struct.NhanVien nv = AddDataToObject(EnumMyStruct.NhanVien) as SQL.Struct.NhanVien;
-                        if(SQL.ListData.GetDataFromSQL.NhanVien_AddNewRecord(nv))
-                        {
-                            MessageBox.Show("Tạo bản ghi mới thành công!");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Tạo bản ghi thất bại!");
-                        }
+                        Models.NhanVien nv = AddDataToObject(EnumMyStruct.NhanVien) as Models.NhanVien;
+                        db.NhanViens.AddOrUpdate(nv);
+                        db.SaveChanges();
+                        MessageBox.Show("Tạo bản ghi mới thành công!");
                         break;
 
                     default:
                         break;
                 }
                 bSaveNewRecord = false;
-                this.button3_AddNew.Text = "Thêm mới";
+                this.btnAddNew.Text = "Thêm mới";
                 this.button8_Cancel_Click(sender, e);
                 this.dataGridView1.Enabled = true;
             }
@@ -456,30 +487,27 @@ namespace LibraryManagement.Forms
             switch (eTypeManage)
             {
                 case EnumMyStruct.NguoiDung:
-                    SQL.Struct.NguoiDung nd = AddDataToObject(EnumMyStruct.NguoiDung) as SQL.Struct.NguoiDung;
-                    if(!SQL.ListData.GetDataFromSQL.Update_NguoiDung(nd))
-                    {
-                        MessageBox.Show("Không thể update bản ghi");
-                    }
+                    Models.NguoiDung nd = AddDataToObject(EnumMyStruct.NguoiDung) as Models.NguoiDung;
+                    db.NguoiDungs.AddOrUpdate(nd);
+                    db.SaveChanges();
                     break;
                 case EnumMyStruct.NhanVien:
-                    SQL.Struct.NhanVien nv = AddDataToObject(EnumMyStruct.NhanVien) as SQL.Struct.NhanVien;
-                    if (!SQL.ListData.GetDataFromSQL.Update_NhanVien(nv))
-                    {
-                        MessageBox.Show("Không thể update bản ghi");
-                    }
+                    Models.NhanVien nv = AddDataToObject(EnumMyStruct.NhanVien) as Models.NhanVien;
+                    db.NhanViens.AddOrUpdate(nv);
+                    db.SaveChanges();
                     break;
                 default:
                     break;
             }
-            button2_Reset_Click(sender, e);
+            btnReset_Click(sender, e);
         }
 
-        private void button1_Find_Click(object sender, EventArgs e)
+        private void btnFind_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(textBox1_FindTextbox.Text))
+            if (!string.IsNullOrWhiteSpace(txtFindTextbox.Text))
             {
-                Usefull_Function.Find(this.textBox1_FindTextbox.Text, ref dataGridView1, new List<int>() {0, 1, 2, 3, 4, 5, 6 });
+                btnReset_Click(sender, e);
+                Usefull_Function.Find(this.txtFindTextbox.Text, ref dataGridView1);
             }
         }
     }
