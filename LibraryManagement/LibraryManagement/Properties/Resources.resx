@@ -121,7 +121,7 @@
   <data name="abstract_tribal_background_png714_41e4_9345_07efd2ad87a5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\abstract-tribal-background-png714-41e4-9345-07efd2ad87a5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ahihihiii__2_" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ahihihiii" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ahihihiii (2).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="arrow_right" type="System.Resources.ResXFileRef, System.Windows.Forms">

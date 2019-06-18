@@ -113,9 +113,9 @@ namespace LibraryManagement.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ahihihiii__2_ {
+        internal static System.Drawing.Bitmap ahihihiii {
             get {
-                object obj = ResourceManager.GetObject("ahihihiii__2_", resourceCulture);
+                object obj = ResourceManager.GetObject("ahihihiii", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
