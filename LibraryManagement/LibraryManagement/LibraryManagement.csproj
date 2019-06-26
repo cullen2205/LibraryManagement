@@ -81,12 +81,6 @@
     <Compile Include="Forms\GiveBackBook.designer.cs">
       <DependentUpon>GiveBackBook.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Loading.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Loading.designer.cs">
-      <DependentUpon>Loading.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\LoginFormLibrary.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,9 +156,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GiveBackBook.resx">
       <DependentUpon>GiveBackBook.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Loading.resx">
-      <DependentUpon>Loading.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoginFormLibrary.resx">
       <DependentUpon>LoginFormLibrary.cs</DependentUpon>
